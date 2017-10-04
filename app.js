@@ -13,7 +13,7 @@ const config = require("./config.json");
 
 client.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
-  console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
+  console.log(`[Discord Bot] Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
   client.user.setGame(`on ${client.guilds.size} servers`);
@@ -21,13 +21,13 @@ client.on("ready", () => {
 
 client.on("guildCreate", guild => {
   // This event triggers when the bot joins a guild.
-  console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  console.log(`[Discord Bot] New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
   client.user.setGame(`on ${client.guilds.size} servers`);
 });
 
 client.on("guildDelete", guild => {
   // this event triggers when the bot is removed from a guild.
-  console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+  console.log(`[Discord Bot] I have been removed from: ${guild.name} (id: ${guild.id})`);
   client.user.setGame(`on ${client.guilds.size} servers`);
 });
 
@@ -57,6 +57,7 @@ client.on("message", async message => {
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
     const m = await message.channel.send("Ping?");
     m.edit(`Понг! Задержка: ${m.createdTimestamp - message.createdTimestamp}мс. Задержка API: ${Math.round(client.ping)}мс.`);
+	console.log(`[Discord Bot] Ping send to "${message.author.tag}" - Tag "${message.author.username}" - Username.`);
   }
   
   if(command === "say") {
@@ -67,6 +68,7 @@ client.on("message", async message => {
     message.delete().catch(O_o=>{}); 
     // And we get the bot to say the thing: 
     message.channel.send(sayMessage);
+	console.log(`[Discord Bot] Said the words "${args.join(" ")}" by ${message.author.tag}(Tag) `);
   }
   
   if(command === "kick") {
