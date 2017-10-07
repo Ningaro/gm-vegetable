@@ -58,7 +58,7 @@ client.on("message", async message => {
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
     const m = await message.channel.send("Ping?");
     m.edit(`Понг! Задержка: ${m.createdTimestamp - message.createdTimestamp}мс. Задержка API: ${Math.round(client.ping)}мс.`);
-	console.log(`[Discord Bot] Ping send to ${message.author.tag}.`);
+	console.log(`[Discord Bot] Ping send to ${message.author.tag} in ${message.channel}.`);
     client.users.get("257562484360085504").send(`[Discord Bot] Ping send to ${message.author.tag} in ${message.channel}.`);
   }
 
@@ -82,9 +82,40 @@ client.on("message", async message => {
     message.delete().catch(O_o=>{});
     // And we get the bot to say the thing:
     client.user.setGame(`${game}`);
-	console.log(`[Discord Bot] ${message.author.tag} change game to "${game}"`);
-    client.users.get("257562484360085504").send(`[Discord Bot] ${message.author.tag} change game to "${game}"`);
+	console.log(`[Discord Bot] ${message.author.tag} change game to "${game}" in ${message.channel}.`);
+    client.users.get("257562484360085504").send(`[Discord Bot] ${message.author.tag} change game to "${game}" in ${message.channel}.`);
   }
+
+  if(command === "status") {
+    const status = args.join(" ");
+    message.delete().catch(O_o=>{});
+    if(status === "1") {
+      client.user.setStatus(`online`);
+      console.log(`[Discord Bot] ${message.author.tag} change status to online in ${message.channel}.`);
+        client.users.get("257562484360085504").send(`[Discord Bot] ${message.author.tag} change status to online in ${message.channel}.`);
+    }
+    else if(status === "2") {
+      client.user.setStatus(`idle`);
+      console.log(`[Discord Bot] ${message.author.tag} change status to idle.`);
+        client.users.get("257562484360085504").send(`[Discord Bot] ${message.author.tag} change status to idle in ${message.channel}.`);
+    }
+    else if(status === "3") {
+      client.user.setStatus(`dnd`);
+      console.log(`[Discord Bot] ${message.author.tag} change status to dnd.`);
+        client.users.get("257562484360085504").send(`[Discord Bot] ${message.author.tag} change status to dnd in ${message.channel}.`);
+    }
+    else if(status === "4") {
+      client.user.setStatus(`invisible`);
+      console.log(`[Discord Bot] ${message.author.tag} change status to invisible.`);
+        client.users.get("257562484360085504").send(`[Discord Bot] ${message.author.tag} change status to invisible in ${message.channel}.`);
+    }
+    else {
+      message.channel.send(`Чет дис лагает...`);
+      console.log(`[Discord Bot] ${message.author.tag} could not change status.`);
+        client.users.get("257562484360085504").send(`[Discord Bot] ${message.author.tag} could not change status in ${message.channel}.`);
+    }
+  }
+
   if(command === "kick") {
     // This command must be limited to mods and admins. In this example we just hardcode the role names.
     // Please read on Array.some() to understand this bit:
@@ -112,7 +143,7 @@ client.on("message", async message => {
 
   }
 
-  if(command === "ban") {
+  if(command === "banold") {
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
     if(!message.member.roles.some(r=>["Administrator"].includes(r.name)) )
