@@ -11,6 +11,10 @@ const config = require("./config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
 
+// идентификатор внутреннего таймера
+// можем использовать для остановки ранее запущенного периодического исполнения
+var timerId;
+
 client.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
   console.log(`[Discord Bot] Генно модифицированный помидор запустился, с ${client.users.size} users, в ${client.channels.size} channels в ${client.guilds.size} guilds.`);
@@ -18,6 +22,14 @@ client.on("ready", () => {
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
   client.user.setGame(`игру`);
+
+  // включим обработчик раз в 5 сек
+  timerId = setInterval(function() {
+    console.log("тик" );
+    //message.channel.send("Tick!");
+  }, 5000);
+
+
 });
 
 client.on("guildCreate", guild => {
@@ -146,7 +158,7 @@ client.on("message", async message => {
   if(command === "banold") {
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
-    if(!message.member.roles.some(r=>["Administrator"].includes(r.name)) )
+    if(!message.member.roles.some(r=>["Милорд"].includes(r.name)) )
       return message.reply("Sorry, you don't have permissions to use this!");
 
     let member = message.mentions.members.first();
@@ -159,9 +171,9 @@ client.on("message", async message => {
     if(!reason)
       return message.reply("Please indicate a reason for the ban!");
 
-    await member.ban(reason)
+    await member.addRole("350340218148093953", reason)
       .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
-    message.reply(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
+    message.channel.send(`${member.user.username} помощен в карантин, диагноз: ${reason}`);
   }
 
   if(command === "purge") {
