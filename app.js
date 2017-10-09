@@ -15,6 +15,12 @@ const config = require("./config.json");
 // можем использовать для остановки ранее запущенного периодического исполнения
 var timerId;
 
+var banka = [{userid: "1111222333", banTill: 123456789}];
+
+u_data = {userid: "1111222333", banTill: 123456789}
+
+banka.push(u_data);
+
 client.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
   console.log(`[Discord Bot] Генно модифицированный помидор запустился, с ${client.users.size} users, в ${client.channels.size} channels в ${client.guilds.size} guilds.`);
@@ -24,11 +30,13 @@ client.on("ready", () => {
   client.user.setGame(`игру`);
 
   // включим обработчик раз в 5 сек
+  
+  /*
   timerId = setInterval(function() {
     console.log("тик" );
-    //message.channel.send("Tick!");
+    client.users.get("257562484360085504").send("Tick!");
   }, 5000);
-
+*/
 
 });
 
@@ -155,25 +163,26 @@ client.on("message", async message => {
 
   }
 
-  if(command === "banold") {
+  if(command === "ban") {
+	  message.delete().catch(O_o=>{});
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
     if(!message.member.roles.some(r=>["Милорд"].includes(r.name)) )
-      return message.reply("Sorry, you don't have permissions to use this!");
+      return message.reply("Я вам не доверяю сэр!");
 
     let member = message.mentions.members.first();
     if(!member)
-      return message.reply("Please mention a valid member of this server");
+      return message.reply("Тут такого нету!");
     if(!member.bannable)
-      return message.reply("I cannot ban this user! Do they have a higher role? Do I have ban permissions?");
+      return message.reply("Вы ошибаетесь! Этот покемон полностью здоров!");
 
     let reason = args.slice(1).join(' ');
     if(!reason)
-      return message.reply("Please indicate a reason for the ban!");
+      return message.reply("Укажите примерный диагноз");
 
     await member.addRole("350340218148093953", reason)
-      .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
-    message.channel.send(`${member.user.username} помощен в карантин, диагноз: ${reason}`);
+      .catch(error => message.reply(`Черт, ${message.author} я не могу узнатьего диагноз по причине: ${error}`));
+    message.channel.send(`<@${member.user.id}> помещен в карантин, диагноз: ${reason}`);
   }
 
   if(command === "purge") {
