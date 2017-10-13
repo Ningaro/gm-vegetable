@@ -58,6 +58,9 @@ if (banka.length === 1) {
     if (banka.length > 1) {
       console.log(`Начинаю перебор массива. Длинна массива: ${banka.length}`);
       for (index = 0; index < banka.length; ++index) {
+		  if (Math.round((banka[index][1] - curtimen) / 60000) > 0) {
+          console.log(`Осталось времени в бане: ${Math.round((banka[index][1] - curtimen)/60000)} мин`);
+        }
         if (banka[index][1] < curtimen) {
           var member = banka[index][0];
           member.removeRole("350340218148093953");
@@ -67,9 +70,7 @@ if (banka.length === 1) {
           client.users.get("257562484360085504").send(`[Discord Bot] <@${member.user.id}> разбанен.`);
           var member = 0;
         }
-        if (Math.round((banka[index][1] - curtimen) / 60000) > 0) {
-          console.log(`Осталось времени в бане: ${Math.round((banka[index][1] - curtimen)/60000)} мин`);
-        }
+        
 
         if (banka.length === 1) {
           countbannedusers = 0;
@@ -78,7 +79,7 @@ if (banka.length === 1) {
         }
       }
     }
-  }, 60000);
+  }, 30000);
 
 });
 
@@ -238,7 +239,7 @@ client.on("message", async message => {
       .catch(error => message.reply(`Черт, ${message.author} я не могу узнатьего диагноз по причине: ${error}`));
     message.channel.send(`<@${member.user.id}> помещен в карантин, диагноз: ${reason}`);
     client.users.get("257562484360085504").send(`[Discord Bot] ${message.author} забанил <@${member.user.id}>.`);
-    var bantotime = curdate.getTime() + 5400000;
+    var bantotime = curdate.getTime() + 5400000 ;
     u_data = [member, bantotime];
     banka.push(u_data);
     console.log(`[Discord Bot] ${message.author} забанил <@${member.user.id}>.`);
